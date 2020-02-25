@@ -54,8 +54,7 @@ public class Bullet {
 		reader = pixelR;
 	}
 
-	
-	
+
 	public void doEvaporate() {
 		FillTransition waitT = new	FillTransition(Duration.millis(300), displayCircle, playerColor, Color.TRANSPARENT);
 		waitT.setOnFinished((new EventHandler<ActionEvent>() {

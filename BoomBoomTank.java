@@ -125,8 +125,6 @@ public class BoomBoomTank extends Application {
             }
             
             
-            // PLAYER TWO
-            
             
             // changing angles
             if (keyStatusPlayerTwo[2]) {

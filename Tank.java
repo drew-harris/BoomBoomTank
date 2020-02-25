@@ -83,6 +83,10 @@ public class Tank {
 
        return -1;
     }
+    
+    public boolean testCollision(Bullet[] otherBullets) {
+        
+    }
 	
 
 	/** Called whenever user presses END key.*/
