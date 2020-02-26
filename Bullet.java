@@ -80,7 +80,10 @@ public class Bullet {
 		} else {
 			displayCircle.setFill(Color.TRANSPARENT);
 			setSpeed(0, 0);
-			
+			setX(0);
+            setY(0);
+            displayCircle.setTranslateX(xPos);
+    		displayCircle.setTranslateY(yPos);
 		}
 	}
     
@@ -140,7 +143,7 @@ public class Bullet {
 				xVel *= -1;
 			}
 			collisionCount++;
-			if (collisionCount == 6) {
+			if (collisionCount == 9) {
 				doEvaporate();
 			}
 		}

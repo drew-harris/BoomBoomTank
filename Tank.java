@@ -20,7 +20,6 @@ import java.io.*;
 /** Player controlled image*/
 public class Tank {
 
-    public static final int BULLET_LIMIT = 20;
     public static final int BULLET_SPEED = 6;
     
     public static final int UP = 0;
@@ -119,7 +118,7 @@ public class Tank {
 									   
 			canShoot = false;
 			
-			PauseTransition waitT = new PauseTransition(Duration.millis(200));
+			PauseTransition waitT = new PauseTransition(Duration.millis(10));
 			waitT.setOnFinished((new EventHandler<ActionEvent>() {
 				public void	handle(ActionEvent e){
 					canShoot = true;

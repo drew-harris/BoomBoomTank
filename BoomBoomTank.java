@@ -41,7 +41,7 @@ public class BoomBoomTank extends Application {
     Text p1WinDisplay;
     Text p2WinDisplay;
 
-    public static final int BULLET_LIMIT = 10;
+    public static final int BULLET_LIMIT = 80;
     public static final int BULLET_SPEED = 4;
     
     public static final int UP = 0;
@@ -80,7 +80,7 @@ public class BoomBoomTank extends Application {
                     keyStatusPlayerTwo[1] = true;
                 }
 
-                if (e.getCode() == KeyCode.E) {
+                if (e.getCode() == KeyCode.TAB) {
                     playerTwo.shoot();
                 }
             }
