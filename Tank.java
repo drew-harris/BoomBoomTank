@@ -21,7 +21,7 @@ import java.io.*;
 public class Tank {
 
     public static final int BULLET_LIMIT = 20;
-    public static final int BULLET_SPEED = 4;
+    public static final int BULLET_SPEED = 5;
     
     public static final int UP = 0;
     public static final int DOWN = 1;
@@ -111,8 +111,8 @@ public class Tank {
 		if (index != -1 && canShoot) {
 		
 			bullets[index].setStatus(true);
-			bullets[index].setX(getMiddlePoint().getX() + 27.5 * Math.cos( Math.toRadians( angle)));
-			bullets[index].setY(getMiddlePoint().getY() + 27.5 * -1 *Math.sin( Math.toRadians( angle)));
+			bullets[index].setX(getMiddlePoint().getX() + 30.7 * Math.cos( Math.toRadians( angle)));
+			bullets[index].setY(getMiddlePoint().getY() + 30.7 * -1 *Math.sin( Math.toRadians( angle)));
 			
 			bullets[index].setSpeed( (Math.cos( Math.toRadians( angle)) * BULLET_SPEED),
 									   (Math.sin( Math.toRadians( angle )) * - BULLET_SPEED) );
