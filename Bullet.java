@@ -53,6 +53,7 @@ public class Bullet {
 		root.getChildren().add(displayCircle);
 		reader = pixelR;
 	}
+    
 
 
 	public void doEvaporate() {
@@ -139,7 +140,7 @@ public class Bullet {
 				xVel *= -1;
 			}
 			collisionCount++;
-			if (collisionCount == 3) {
+			if (collisionCount == 6) {
 				doEvaporate();
 			}
 		}

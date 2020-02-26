@@ -1,6 +1,8 @@
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.effect.*;
+import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.stage.*;
 import javafx.scene.paint.Color;
 import javafx.animation.*;
@@ -17,6 +19,9 @@ import javafx.scene.image.*;
 import java.util.*;
 import java.io.*;
 
+
+// TODO: MAKE IT SO YOU CAN TURN AWAY FROM WALLS
+
 public class BoomBoomTank extends Application {
 
     Bullet[] playerOneBullets;
@@ -30,6 +35,11 @@ public class BoomBoomTank extends Application {
     
     Tank playerOne;
     Tank playerTwo;
+    
+    int playerOneWins;
+    int playerTwoWins;
+    Text p1WinDisplay;
+    Text p2WinDisplay;
 
     public static final int BULLET_LIMIT = 10;
     public static final int BULLET_SPEED = 4;
@@ -161,26 +171,41 @@ public class BoomBoomTank extends Application {
             
             
             if (playerOneWin) {
-                int winner = BLUE;
+                playerOneWins++;
                 setUpMap();
             } else if (playerTwoWin) {
-                int winner = RED;
+                playerTwoWins++;
                 setUpMap();
             }
         }
     }
     
+    public void disableAllBullets() {
+        for (Bullet bullet : playerOneBullets) {
+            bullet.setStatus(false);
+        }
+        
+        for (Bullet bullet : playerTwoBullets) {
+            bullet.setStatus(false);
+        }
+    }
+    
     
     public void setUpMap() {
+    
         Image map = new Image("test.png");
         mapView.setImage(map);
         
+        p1WinDisplay.setText("" + playerOneWins);
+        p2WinDisplay.setText("" + playerTwoWins);
         
-        playerOne.setX(640);
-        playerOne.setY(300);
+        playerOne.setX(1045);
+        playerOne.setY(509);
         
-        playerTwo.setX(900);
-        playerTwo.setY(300);
+        playerTwo.setX(125);
+        playerTwo.setY(151);
+        
+        disableAllBullets();
     }
     
 
@@ -223,21 +248,41 @@ public class BoomBoomTank extends Application {
 
         playerOne = new Tank(root, playerOneBullets, reader);
         playerOne.setPlayerColor(Color.BLUE);
-        playerOne.setX(640);
-        playerOne.setY(300);
         
         playerTwo = new Tank(root, playerTwoBullets, reader);
         playerTwo.setPlayerColor(Color.RED);
-        playerTwo.setX(800);
-        playerTwo.setY(300);
 
         keyStatusPlayerOne = new boolean[4];
         keyStatusPlayerTwo = new boolean[4];
+        
+        playerOneWins = 0;
+        playerTwoWins = 0;
+        
         stage.setTitle("Tanks Movement Test");
         stage.setScene(scene);
         stage.show();
-
+        
+        
+        
+        p1WinDisplay = new Text(1140, 60, "");
+        p2WinDisplay = new Text(55, 60, "");
+        
+        Font pixelFont = new Font("Arial", 55);// Font.font("Candara", 25);
+		p1WinDisplay.setFont(pixelFont);
+		p1WinDisplay.setFill(Color.BLUE);
+		p1WinDisplay.setEffect(new DropShadow(0,2,2, Color.WHITE));
+		root.getChildren().add(p1WinDisplay);
+        
+        p2WinDisplay.setFont(pixelFont);
+		p2WinDisplay.setFill(Color.RED);
+		p2WinDisplay.setEffect(new DropShadow(0,2,2, Color.WHITE));
+		root.getChildren().add(p2WinDisplay);
+        
+        setUpMap();
+        
         TanksAnimationTimer aniTimer = new TanksAnimationTimer();
         aniTimer.start();
+        
+        
     }
 }

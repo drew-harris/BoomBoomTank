@@ -21,7 +21,7 @@ import java.io.*;
 public class Tank {
 
     public static final int BULLET_LIMIT = 20;
-    public static final int BULLET_SPEED = 5;
+    public static final int BULLET_SPEED = 6;
     
     public static final int UP = 0;
     public static final int DOWN = 1;
