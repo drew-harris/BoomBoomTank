@@ -85,7 +85,21 @@ public class Tank {
     }
     
     public boolean testCollision(Bullet[] otherBullets) {
+        Bounds rectBounds = dispTank.localToScene(dispTank.getBoundsInLocal());
+        for (Bullet bullet : otherBullets) {
+            Shape intersection = Shape.intersect(dispTank, bullet.getBulletShape());
+            if (intersection.getBoundsInParent().getWidth() > 0) {
+                return true;
+            }
+        }
         
+        for(Bullet bullet : bullets) {
+            Shape intersection = Shape.intersect(dispTank, bullet.getBulletShape());
+            if (intersection.getBoundsInParent().getWidth() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 	
 

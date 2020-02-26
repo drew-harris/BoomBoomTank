@@ -173,4 +173,8 @@ public class Bullet {
 		xVel = x;
 		yVel = y;
 	}
+    
+    public Shape getBulletShape() {
+        return displayCircle;
+    }
 }

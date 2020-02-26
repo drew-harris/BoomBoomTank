@@ -116,7 +116,9 @@ public class BoomBoomTank extends Application {
             }
 
             playerOne.setPosition();
-
+            
+            
+            
             for (Bullet bullet : playerOneBullets) {
                 if (bullet.enabled) {
                     bullet.moveBullet();
@@ -148,7 +150,15 @@ public class BoomBoomTank extends Application {
                     bullet.doReflect();
                 }
             }
-
+            
+            boolean playerTwoWin = playerOne.testCollision(playerTwoBullets);
+            boolean playerOneWin = playerTwo.testCollision(playerOneBullets);
+            
+            if (playerOneWin) {
+                System.out.println("point for blue");
+            } else if (playerTwoWin) {
+                System.out.println("point for red");
+            }
         }
     }
     
