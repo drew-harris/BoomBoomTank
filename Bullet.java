@@ -82,17 +82,22 @@ public class Bullet {
 			
 		}
 	}
+    
+    public boolean getEnabled() {
+        return enabled;
+    }
 
 	/** Moves the bullet by adding velocities to class position integers than
 	 * moves the node itself.
 	 *
 	 */
 	public void moveBullet() {
-		
-		xPos += xVel;
-		yPos += yVel;
-		displayCircle.setTranslateX(xPos);
-		displayCircle.setTranslateY(yPos);
+		if(enabled){
+    		xPos += xVel;
+    		yPos += yVel;
+    		displayCircle.setTranslateX(xPos);
+    		displayCircle.setTranslateY(yPos);
+        }
 		
 	}
 	

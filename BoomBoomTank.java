@@ -24,17 +24,22 @@ public class BoomBoomTank extends Application {
     boolean[] keyStatusPlayerOne;
     boolean[] keyStatusPlayerTwo;
 
+    Image map;
+    ImageView mapView;
     PixelReader reader;
+    
     Tank playerOne;
     Tank playerTwo;
 
-    public static final int BULLET_LIMIT = 20;
+    public static final int BULLET_LIMIT = 10;
     public static final int BULLET_SPEED = 4;
     
     public static final int UP = 0;
     public static final int DOWN = 1;
     public static final int LEFT = 2;
     public static final int RIGHT = 3;
+    public static final int BLUE = 996;
+    public static final int RED = 997;
 
     public class KeyBoard implements EventHandler<KeyEvent> {
         @Override
@@ -154,12 +159,28 @@ public class BoomBoomTank extends Application {
             boolean playerTwoWin = playerOne.testCollision(playerTwoBullets);
             boolean playerOneWin = playerTwo.testCollision(playerOneBullets);
             
+            
             if (playerOneWin) {
-                System.out.println("point for blue");
+                int winner = BLUE;
+                setUpMap();
             } else if (playerTwoWin) {
-                System.out.println("point for red");
+                int winner = RED;
+                setUpMap();
             }
         }
+    }
+    
+    
+    public void setUpMap() {
+        Image map = new Image("test.png");
+        mapView.setImage(map);
+        
+        
+        playerOne.setX(640);
+        playerOne.setY(300);
+        
+        playerTwo.setX(900);
+        playerTwo.setY(300);
     }
     
 
@@ -174,8 +195,8 @@ public class BoomBoomTank extends Application {
         Scene scene = new Scene(root, 1280, 720, Color.WHITE);
 
         // TODO: new functions for different maps
-        Image map = new Image("test.png");
-        ImageView mapView = new ImageView();
+        map = new Image("test.png");
+        mapView = new ImageView();
         mapView.setImage(map);
         root.getChildren().add(mapView);
         reader = map.getPixelReader();

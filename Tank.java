@@ -76,7 +76,7 @@ public class Tank {
     */
     public int getFirstBullet() {
         for (int i = 0; i < bullets.length; i++) {
-            if (!bullets[i].enabled) {
+            if (!bullets[i].getEnabled()) {
                 return i;
             }
        }
@@ -87,9 +87,11 @@ public class Tank {
     public boolean testCollision(Bullet[] otherBullets) {
         Bounds rectBounds = dispTank.localToScene(dispTank.getBoundsInLocal());
         for (Bullet bullet : otherBullets) {
-            Shape intersection = Shape.intersect(dispTank, bullet.getBulletShape());
-            if (intersection.getBoundsInParent().getWidth() > 0) {
-                return true;
+            if (bullet.getEnabled()) {
+                Shape intersection = Shape.intersect(dispTank, bullet.getBulletShape());
+                if (intersection.getBoundsInParent().getWidth() > 0) {
+                    return true;
+                }
             }
         }
         
@@ -104,7 +106,7 @@ public class Tank {
 	
 
 	/** Called whenever user presses END key.*/
-	public void shoot() {
+    public void shoot() {
 		int index = getFirstBullet();
 		if (index != -1 && canShoot) {
 		
