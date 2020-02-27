@@ -19,7 +19,7 @@ import java.io.*;
 
 //-------------------------------------------------------------------------------------------
 /** Represents a JavaFX circle node that can bounce off walls using black pixel detection.
-* Shot by tank
+* Shot by tank 
 *
 */
 public class Bullet {
