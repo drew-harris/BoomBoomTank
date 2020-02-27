@@ -124,6 +124,11 @@ public class Bullet {
 			return true;
 		}
 	}
+    
+    public void setReader(PixelReader inputReader) {
+        reader = inputReader;
+    }
+	
 
 	/** Tests to see if there is a collision then reflects the bullet accordingly.
 	 * Ran on enabled bullets in the game loop

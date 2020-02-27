@@ -26,9 +26,12 @@ public class Tank {
     public static final int DOWN = 1;
     public static final int LEFT = 2;
     public static final int RIGHT = 3;
+    public static final int BLUE = 996;
+    public static final int RED = 997;
     
 	Rectangle dispTank;
-	Rectangle testBounds;
+    
+    ImageView tankView;
 
 	double xPos;
 	double yPos;
@@ -49,9 +52,9 @@ public class Tank {
     
     Color playerColor;
 	
-	public Tank(Group root, Bullet[] bullets, PixelReader reader) {
+	public Tank(Group root, Bullet[] bullets, PixelReader reader, int color) {
 		dispTank = new Rectangle(0, 0, 30, 55);
-		root.getChildren().add(dispTank);
+
 		angle = 0;
 		xVel = 0;
 		yVel = 0;
@@ -59,14 +62,22 @@ public class Tank {
 		dispTank.setRotate(angle * -1 - 90);    // initally sets tank to face RIGHT
 		this.bullets = bullets;
         this.reader = reader;
+        Image tankImage;
+        if (color == BLUE) {
+            tankImage = new Image("blueTank.png");
+        } else {
+            tankImage = new Image("redTank.png");
+        }
+        tankView = new ImageView();
+        tankView.setImage(tankImage);
+        root.getChildren().add(tankView);
 	}
 	
-    /** Sets the color of the player.
-    *
-    */
-    public void setPlayerColor(Color color) {
-        playerColor = color;
-        dispTank.setFill(playerColor);
+    
+    public void updateTankImage() {
+        tankView.setTranslateX(dispTank.getTranslateX());
+        tankView.setTranslateY(dispTank.getTranslateY());
+        tankView.setRotate(dispTank.getRotate() + 180);
     }
     
     /** Returns the first bullet in the array that is not active.
@@ -101,6 +112,10 @@ public class Tank {
             }
         }
         return false;
+    }
+    
+    public void setReader(PixelReader inputReader) {
+        reader = inputReader;
     }
 	
 

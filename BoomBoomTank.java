@@ -40,6 +40,8 @@ public class BoomBoomTank extends Application {
     int playerTwoWins;
     Text p1WinDisplay;
     Text p2WinDisplay;
+    
+    public static final int NUM_OF_LEVELS = 10;
 
     public static final int BULLET_LIMIT = 80;
     public static final int BULLET_SPEED = 4;
@@ -55,14 +57,13 @@ public class BoomBoomTank extends Application {
         @Override
         public void handle(KeyEvent e) {
             if (e.getEventType() == KeyEvent.KEY_PRESSED) {
-
-                if (e.getCode() == KeyCode.RIGHT) {
+                if (e.getCode() == KeyCode.NUMPAD6) {
                    keyStatusPlayerOne[3] = true;
-                } else if (e.getCode() == KeyCode.LEFT) {
+                } else if (e.getCode() == KeyCode.NUMPAD4) {
                    keyStatusPlayerOne[2] = true;
-                } else if (e.getCode() == KeyCode.UP) {
+                } else if (e.getCode() == KeyCode.NUMPAD8) {
                    keyStatusPlayerOne[0] = true;
-                } else if (e.getCode() == KeyCode.DOWN) {
+                } else if (e.getCode() == KeyCode.NUMPAD5) {
                     keyStatusPlayerOne[1] = true;
                 }
 
@@ -80,20 +81,17 @@ public class BoomBoomTank extends Application {
                     keyStatusPlayerTwo[1] = true;
                 }
 
-                if (e.getCode() == KeyCode.TAB) {
+                if (e.getCode() == KeyCode.TAB || e.getCode() == KeyCode.SPACE) {
                     playerTwo.shoot();
                 }
-            }
-
-            if (e.getEventType() == KeyEvent.KEY_RELEASED) {
-
-                if (e.getCode() == KeyCode.RIGHT) {
+            }else if (e.getEventType() == KeyEvent.KEY_RELEASED) {
+                if (e.getCode() == KeyCode.NUMPAD6) {
                    keyStatusPlayerOne[3] = false;
-                } else if (e.getCode() == KeyCode.LEFT) {
+                } else if (e.getCode() == KeyCode.NUMPAD4) {
                    keyStatusPlayerOne[2] = false;
-                } else if (e.getCode() == KeyCode.UP) {
+                } else if (e.getCode() == KeyCode.NUMPAD8) {
                    keyStatusPlayerOne[0] = false;
-                } else if (e.getCode() == KeyCode.DOWN) {
+                } else if (e.getCode() == KeyCode.NUMPAD5) {
                    keyStatusPlayerOne[1] = false;
                 }
                 
@@ -115,22 +113,24 @@ public class BoomBoomTank extends Application {
 
         /** Runs 60 times a second.*/
         public void handle(long e) {
-
+        
             // changing angles
             if (keyStatusPlayerOne[2]) {
                 playerOne.changeAngle(3.5);
-            } else if (keyStatusPlayerOne[3]) {
+            } 
+            if (keyStatusPlayerOne[3]) {
                 playerOne.changeAngle(-3.5);
             }
 
             // forward and backward
             if (keyStatusPlayerOne[0]) {
                 playerOne.go(true);
-            } else if (keyStatusPlayerOne[1]) {
+            } 
+            if (keyStatusPlayerOne[1]) {
                 playerOne.go(false);
             }
 
-            playerOne.setPosition();
+            
             
             
             
@@ -146,18 +146,19 @@ public class BoomBoomTank extends Application {
             // changing angles
             if (keyStatusPlayerTwo[2]) {
                 playerTwo.changeAngle(3.5);
-            } else if (keyStatusPlayerTwo[3]) {
+            } 
+            if (keyStatusPlayerTwo[3]) {
                 playerTwo.changeAngle(-3.5);
             }
 
             // forward and backward
             if (keyStatusPlayerTwo[0]) {
                 playerTwo.go(true);
-            } else if (keyStatusPlayerTwo[1]) {
+            } 
+            if (keyStatusPlayerTwo[1]) {
                 playerTwo.go(false);
             }
 
-            playerTwo.setPosition();
 
             for (Bullet bullet : playerTwoBullets) {
                 if (bullet.enabled) {
@@ -169,6 +170,10 @@ public class BoomBoomTank extends Application {
             boolean playerTwoWin = playerOne.testCollision(playerTwoBullets);
             boolean playerOneWin = playerTwo.testCollision(playerOneBullets);
             
+            playerTwo.setPosition();
+            playerOne.setPosition();
+            playerOne.updateTankImage();
+            playerTwo.updateTankImage();
             
             if (playerOneWin) {
                 playerOneWins++;
@@ -179,6 +184,13 @@ public class BoomBoomTank extends Application {
             }
         }
     }
+    
+    public String getRandomLevel() {
+        int random = (int)(Math.random() * (NUM_OF_LEVELS) + 1);
+        return "maps/map" + random + ".png";
+    }
+    
+    
     
     public void disableAllBullets() {
         for (Bullet bullet : playerOneBullets) {
@@ -192,18 +204,34 @@ public class BoomBoomTank extends Application {
     
     
     public void setUpMap() {
-    
-        Image map = new Image("test.png");
+        String level = getRandomLevel();
+        System.out.println(level);
+        Image map = new Image(level);
+        reader = map.getPixelReader();
+        playerOne.setReader(reader);
+        playerTwo.setReader(reader);
+        
+        for (Bullet bullet : playerOneBullets) {
+            bullet.setReader(reader);
+        }
+        
+        for (Bullet bullet : playerTwoBullets) {
+            bullet.setReader(reader);
+        }
         mapView.setImage(map);
+        
+        
         
         p1WinDisplay.setText("" + playerOneWins);
         p2WinDisplay.setText("" + playerTwoWins);
         
-        playerOne.setX(1045);
-        playerOne.setY(509);
+        Point2D[] spawns = SpawnFinder.getSpawns(map);
         
-        playerTwo.setX(125);
-        playerTwo.setY(151);
+        playerOne.setX(spawns[0].getX());
+        playerOne.setY(spawns[0].getY());
+        playerTwo.setX(spawns[1].getX());
+        playerTwo.setY(spawns[1].getY());
+        
         
         disableAllBullets();
     }
@@ -224,7 +252,7 @@ public class BoomBoomTank extends Application {
         mapView = new ImageView();
         mapView.setImage(map);
         root.getChildren().add(mapView);
-        reader = map.getPixelReader();
+
 
         //signature rectangle 
         Rectangle rKey = new Rectangle(0,0,5,5);
@@ -246,11 +274,9 @@ public class BoomBoomTank extends Application {
            playerTwoBullets[i].setStatus(false);
         }
 
-        playerOne = new Tank(root, playerOneBullets, reader);
-        playerOne.setPlayerColor(Color.BLUE);
+        playerOne = new Tank(root, playerOneBullets, reader, BLUE);
         
-        playerTwo = new Tank(root, playerTwoBullets, reader);
-        playerTwo.setPlayerColor(Color.RED);
+        playerTwo = new Tank(root, playerTwoBullets, reader, RED);
 
         keyStatusPlayerOne = new boolean[4];
         keyStatusPlayerTwo = new boolean[4];
@@ -264,18 +290,16 @@ public class BoomBoomTank extends Application {
         
         
         
-        p1WinDisplay = new Text(1140, 60, "");
-        p2WinDisplay = new Text(55, 60, "");
+        p1WinDisplay = new Text(1140, 30, "");
+        p2WinDisplay = new Text(55, 30, "");
         
-        Font pixelFont = new Font("Arial", 55);// Font.font("Candara", 25);
+        Font pixelFont = new Font("Arial", 35);// Font.font("Candara", 25);
 		p1WinDisplay.setFont(pixelFont);
 		p1WinDisplay.setFill(Color.BLUE);
-		p1WinDisplay.setEffect(new DropShadow(0,2,2, Color.WHITE));
 		root.getChildren().add(p1WinDisplay);
         
         p2WinDisplay.setFont(pixelFont);
 		p2WinDisplay.setFill(Color.RED);
-		p2WinDisplay.setEffect(new DropShadow(0,2,2, Color.WHITE));
 		root.getChildren().add(p2WinDisplay);
         
         setUpMap();
