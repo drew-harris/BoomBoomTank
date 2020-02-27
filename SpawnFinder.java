@@ -15,6 +15,12 @@ public class SpawnFinder {
                 }
             }
         }
+        
+        if(Math.random() > .50) {
+            Point2D tempPoint = new Point2D(spawns[0].getX(), spawns[0].getY());
+            spawns[0] = new Point2D(spawns[1].getX(), spawns[1].getY());
+            spawns[1] = new Point2D(tempPoint.getX(), tempPoint.getY());
+        }
         return spawns;
     }
 }
